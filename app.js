@@ -61,7 +61,7 @@ function team() {
     if (data.teamMemberChoice == "Engineer") {
         engineer();
 
-    } else if (data.teamMemberChoice === "intern") {
+    } else if (data.teamMemberChoice === "Intern") {
         intern();
     } else (outputTeam());
 })
@@ -118,7 +118,7 @@ function intern() {
         message: "What school did the intern go to?"
     },
 ]).then(function(data) {
-    const intern = new Ingineer(data.internName, data.internId, data.internEmail, data.internSchool);
+    const intern = new Intern(data.internName, data.internId, data.internEmail, data.internSchool);
     mainArr.push(intern);
     emptyId.push(data.internId);
     team();
