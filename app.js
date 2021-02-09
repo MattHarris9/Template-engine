@@ -13,145 +13,131 @@ const render = require("./lib/htmlRenderer");
 let mainArr = [];
 let emptyId= [];
 
-const confirmManager = [{
-    type: 'confirm',
-    name: 'Manager',
-    message: "Are you a manager?"
-
-}];
-
-
-
-
-const managerInfo = [{
+const employeeQuestions = [{
     type: "input",
-    name: "managers_name",
-    messgae: "What is your name?"
-
+    name: "managerName",
+    message: "What is your manager's name?"
 },
 {
     type: "input",
-    name: "mangers_id",
-    message: "What is your id?"
+    name: "managerId",
+    message: "What is your manager's ID?"
 },
 {
     type: "input",
-    name: "mangers_email",
-    message: "What is your email?"
+    name: "managerEmail",
+    message: "What is your managers email?"
 },
 {
     type: "input",
-    name: "mangers_officeNumber",
-    message: "What is your office number?"
-}];
+    name: "officeNumber",
+    message: "What is your managers officen number?"
+}
+];
 
+function manager() {
+    console.log("Lets build your team");
+    inquirer.prompt(employeeQuestions).then(function(data) {
+        const manager = new Manager (data.managerName, data.managerId, data.managerEmial, data.officeNumber);
+        mainArr.push(manager);
+        emptyId.push(data.managerId);
+        team();
+    });
+};
 
+function team() {
+    inquirer.prompt([{
+        type: "list",
+        name: "teamMemberChoice",
+        message: "Which team member would you like to add?",
+        choices: [
+            "Engineer",
+            "Intern",
+            "I don't want to add another team memver"
+        ]
 
-const internInfo = [{
-    type: "input",
-    name: "interns_name",
-    messgae: "What is your name?"
-
-},
-{
-    type: "input",
-    name: "interns_id",
-    message: "What is your id?"
-},
-{
-    type: "input",
-    name: "interns_email",
-    message: "What is your email?"
-},
-{
-    type: "input",
-    name: "interns_school",
-    message: "What school did you go to?"
-}];
-
-const engineerInfo = [{
-    type: "input",
-    name: "engineers_name",
-    messgae: "What is your name?"
-
-},
-{
-    type: "input",
-    name: "engineers_id",
-    message: "What is your id?"
-},
-{
-    type: "input",
-    name: "engineers_email",
-    message: "What is your email?"
-},
-{
-    type: "input",
-    name: "engineers_github",
-    message: "What is your Github link?"
-}];
-
-
-const list = [{
-    type: "list",
-    name: "teamMembers_type",
-    choices: ["Engineer", "Intern", "I dont' want to add another team member"],
-    message: "Select the role you want to add to your team"
-}];
-
-inquirer.prompt(confirmManager).then(ans => {
-    if (ans.Manager === true) {
-        promptManager();
-    } else {
-        promptNext();
     }
+]).then(function(data) {
+    if (data.teamMemberChoice == "Engineer") {
+        engineer();
+
+    } else if (data.teamMemberChoice === "intern") {
+        intern();
+    } else (outputTeam());
+})
+};
+
+function engineer() {
+    inquirer.prompt([{
+        type: "input",
+        name: "engineerName",
+        message: "What is the engineer's name?"
+    },
+    {
+        type: "input",
+        name: "engineerId",
+        message: "What is the engineer's ID?"
+    },
+    {
+        type: "input",
+        name: "engineerEmail",
+        message: "What is the engineer's email?"
+    },
+    {
+        type: "input",
+        name: "engineerGithub",
+        message: "What is the engineer's Github link?"
+    },
+]).then(function(data) {
+    const engineer = new Engineer(data.engineerName, data.engineerId, data.engineerEmail, data.enginnerGithub);
+    mainArr.push(engineer);
+    emptyId.push(data.engineerId);
+    team();
 });
-
-const promptManager = () => {
-    inquirer.prompt(managerInfo).then(ans => {
-        console.log(ans);
-        mainArr.push(new Manager(ans.managers_name, ans.managers_id, ans.managers_email, ans.managers_officeNumber));
-        promptNext();
-    });
 };
 
-const promptNext = () => {
-    inquirer.prompt(list).then(data => {
-        switch(data.teamMember_type) {
-            case "Engineer":
-                promptEngineer();
-                break;
-            case "Intern":
-                promptIntern();
-                break;
-        }
-    });
+function intern() {
+    inquirer.prompt([{
+        type: "input",
+        name: "internName",
+        message: "What is the intern's name?"
+    },
+    {
+        type: "input",
+        name: "internId",
+        message: "What is the intern's ID?"
+    },
+    {
+        type: "input",
+        name: "internEmail",
+        message: "What is the interns's email?"
+    },
+    {
+        type: "input",
+        name: "internSchool",
+        message: "What school did the intern go to?"
+    },
+]).then(function() {
+    const intern = new Ingineer(data.internName, data.internId, data.internEmail, data.internSchool);
+    mainArr.push(intern);
+    emptyId.push(data.internId);
+    team();
+});
 };
 
-const promptEngineer = () => {
-    inquirer.prompt(engineerInfo).then(ans => {
-        console.log(ans);
-        mainArr.push(new Engineer(ans.engineers_name, ans.engineers_id, ans.engineers_email, ans.engineers_github));
-        promptNext();
-    })
+function outputTeam() {
+    if(!fs.existsSync(OUTPUT_DIR)) {
+        fs.mkdirSync(OUTPUT_DIR)
+    }
+    fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
 }
 
-const promptIntern = () => {
-    inquirer.prompt(internInfo).then(ans => {
-        console.log(ans);
-        mainArr.push(new Intern(ans.interns_name, ans.interns_id, ans.interns_email, ans.engineers_school));
-        promptNext();
-    })
-}
 
-//const createHtml = () => {
-    //console.log('this is new html');
-    //console.log(render(mainArr));
-    //render(mainArr);
-    //fs.writeFile('index.html', render(mainArr), function(err){
-       // if(err) throw err;
-    //})
-//};
+manager();
+
+
+
+
 
 
 
