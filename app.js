@@ -117,7 +117,7 @@ function intern() {
         name: "internSchool",
         message: "What school did the intern go to?"
     },
-]).then(function() {
+]).then(function(data) {
     const intern = new Ingineer(data.internName, data.internId, data.internEmail, data.internSchool);
     mainArr.push(intern);
     emptyId.push(data.internId);
@@ -129,7 +129,7 @@ function outputTeam() {
     if(!fs.existsSync(OUTPUT_DIR)) {
         fs.mkdirSync(OUTPUT_DIR)
     }
-    fs.writeFileSync(outputPath, render(teamMembers), "utf-8");
+    fs.writeFileSync(outputPath, render(mainArr), "utf-8");
 }
 
 
