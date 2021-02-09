@@ -10,6 +10,97 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+let mainArr = [];
+
+const confirmManager = [{
+    type: 'confirm',
+    name: 'Manager',
+    message: "Are you a manager?"
+
+}];
+
+const managerInfo = [{
+    type: "input",
+    name: "managers_name",
+    messgae: "What is your name?"
+
+},
+{
+    type: "input",
+    name: "mangers_id",
+    message: "What is your id?"
+},
+{
+    type: "input",
+    name: "mangers_email",
+    message: "What is your email?"
+},
+{
+    type: "input",
+    name: "mangers_officeNumber",
+    message: "What is your office number?"
+}]
+
+const internInfo = [{
+    type: "input",
+    name: "interns_name",
+    messgae: "What is your name?"
+
+},
+{
+    type: "input",
+    name: "interns_id",
+    message: "What is your id?"
+},
+{
+    type: "input",
+    name: "internss_email",
+    message: "What is your email?"
+},
+{
+    type: "input",
+    name: "interns_school",
+    message: "What school did you go to?"
+}],
+
+const engineerInfo = [{
+    type: "input",
+    name: "engineers_name",
+    messgae: "What is your name?"
+
+},
+{
+    type: "input",
+    name: "engineers_id",
+    message: "What is your id?"
+},
+{
+    type: "input",
+    name: "mangers_email",
+    message: "What is your email?"
+},
+{
+    type: "input",
+    name: "engineers_github",
+    message: "What is your Github link?"
+}],
+const employeeInfo = [{
+    type: "input",
+    name: "employeess_name",
+    messgae: "What is your name?"
+
+},
+{
+    type: "input",
+    name: "employees_id",
+    message: "What is your id?"
+},
+{
+    type: "input",
+    name: "employees_email",
+    message: "What is your email?"
+}]
+
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
