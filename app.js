@@ -11,6 +11,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 const render = require("./lib/htmlRenderer");
 
 let mainArr = [];
+let emptyId= [];
 
 const confirmManager = [{
     type: 'confirm',
@@ -18,6 +19,9 @@ const confirmManager = [{
     message: "Are you a manager?"
 
 }];
+
+
+
 
 const managerInfo = [{
     type: "input",
@@ -39,7 +43,9 @@ const managerInfo = [{
     type: "input",
     name: "mangers_officeNumber",
     message: "What is your office number?"
-}]
+}];
+
+
 
 const internInfo = [{
     type: "input",
@@ -54,14 +60,14 @@ const internInfo = [{
 },
 {
     type: "input",
-    name: "internss_email",
+    name: "interns_email",
     message: "What is your email?"
 },
 {
     type: "input",
     name: "interns_school",
     message: "What school did you go to?"
-}],
+}];
 
 const engineerInfo = [{
     type: "input",
@@ -76,30 +82,81 @@ const engineerInfo = [{
 },
 {
     type: "input",
-    name: "mangers_email",
+    name: "engineers_email",
     message: "What is your email?"
 },
 {
     type: "input",
     name: "engineers_github",
     message: "What is your Github link?"
-}],
-const employeeInfo = [{
-    type: "input",
-    name: "employeess_name",
-    messgae: "What is your name?"
+}];
 
-},
-{
-    type: "input",
-    name: "employees_id",
-    message: "What is your id?"
-},
-{
-    type: "input",
-    name: "employees_email",
-    message: "What is your email?"
-}]
+
+const list = [{
+    type: "list",
+    name: "teamMembers_type",
+    choices: ["Engineer", "Intern", "I dont' want to add another team member"],
+    message: "Select the role you want to add to your team"
+}];
+
+inquirer.prompt(confirmManager).then(ans => {
+    if (ans.Manager === true) {
+        promptManager();
+    } else {
+        promptNext();
+    }
+});
+
+const promptManager = () => {
+    inquirer.prompt(managerInfo).then(ans => {
+        console.log(ans);
+        mainArr.push(new Manager(ans.managers_name, ans.managers_id, ans.managers_email, ans.managers_officeNumber));
+        promptNext();
+    });
+};
+
+const promptNext = () => {
+    inquirer.prompt(list).then(data => {
+        switch(data.teamMember_type) {
+            case "Engineer":
+                promptEngineer();
+                break;
+            case "Intern":
+                promptIntern();
+                break;
+        }
+    });
+};
+
+const promptEngineer = () => {
+    inquirer.prompt(engineerInfo).then(ans => {
+        console.log(ans);
+        mainArr.push(new Engineer(ans.engineers_name, ans.engineers_id, ans.engineers_email, ans.engineers_github));
+        promptNext();
+    })
+}
+
+const promptIntern = () => {
+    inquirer.prompt(internInfo).then(ans => {
+        console.log(ans);
+        mainArr.push(new Intern(ans.interns_name, ans.interns_id, ans.interns_email, ans.engineers_school));
+        promptNext();
+    })
+}
+
+//const createHtml = () => {
+    //console.log('this is new html');
+    //console.log(render(mainArr));
+    //render(mainArr);
+    //fs.writeFile('index.html', render(mainArr), function(err){
+       // if(err) throw err;
+    //})
+//};
+
+
+
+
+
 
 
 // Write code to use inquirer to gather information about the development team members,
