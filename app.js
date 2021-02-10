@@ -31,7 +31,7 @@ const employeeQuestions = [{
 {
     type: "input",
     name: "officeNumber",
-    message: "What is your managers officen number?"
+    message: "What is your managers office number?"
 }
 ];
 
@@ -53,7 +53,7 @@ function team() {
         choices: [
             "Engineer",
             "Intern",
-            "I don't want to add another team memver"
+            "I don't want to add another team member"
         ]
 
     }
